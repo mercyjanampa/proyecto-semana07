@@ -102,6 +102,6 @@ app.post('/api/auth/signout', async (req, res) => {
 (async () => {
     await sequelize.sync({ force: true });
     await Role.bulkCreate([{ name: 'user' }, { name: 'moderator' }, { name: 'admin' }]);
-    const PORT = process.env.PORT || 8080;
+    const PORT = process.env.PORT || 10000;
     app.listen(PORT, () => console.log(`Backend en puerto ${PORT}`));
 })();
