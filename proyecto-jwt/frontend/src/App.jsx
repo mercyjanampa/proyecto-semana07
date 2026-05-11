@@ -9,7 +9,7 @@ export default function App() {
     const [page, setPage] = useState('home');
 
     // Instancia Axios con interceptor
-    const api = axios.create({ baseURL: 'http://localhost:8080/api' });
+    const api = axios.create({ baseURL: 'https://proyecto-semana07.onrender.com' });
 
     api.interceptors.request.use(config => {
         if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
