@@ -5,14 +5,21 @@ import bcrypt from 'bcryptjs';
 import { Sequelize, DataTypes } from 'sequelize';
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+// Esto permite que cualquier aplicación se conecte a tu API
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 app.use(express.json());
 
 const SECRET = 'mi-secreto-2026';
 const ACCESS_TOKEN_EXPIRY = 60; // 60 segundos para la demostración
 
-const sequelize = new Sequelize('jwt_refresh_db', 'root', '', {
-    host: '127.0.0.1', port: 3307, dialect: 'mysql', logging: false
+// Configuración para que funcione en Render sin MySQL
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite', // Se creará un archivo automático
+    logging: false
 });
 
 // MODELOS
@@ -95,5 +102,6 @@ app.post('/api/auth/signout', async (req, res) => {
 (async () => {
     await sequelize.sync({ force: true });
     await Role.bulkCreate([{ name: 'user' }, { name: 'moderator' }, { name: 'admin' }]);
-    app.listen(8080, () => console.log('Backend en puerto 8080'));
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => console.log(`Backend en puerto ${PORT}`));
 })();
